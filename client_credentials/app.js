@@ -6,7 +6,7 @@
  * For more information, read
  * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
  */
-import {clientId, secret} from "../secret.js"
+import {clientId, secret} from './secret.js';
 
 var request = require('request'); // "Request" library
 
