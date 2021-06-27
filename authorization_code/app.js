@@ -58,6 +58,7 @@ app.get('/login', function(req, res) {
     }));
 });
 
+
 app.get('/callback', function(req, res) {
 
   // your application requests refresh and access tokens
@@ -85,7 +86,7 @@ app.get('/callback', function(req, res) {
       },
       json: true
     };
-
+    
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
 
@@ -103,6 +104,14 @@ app.get('/callback', function(req, res) {
           console.log(body);
         });
 
+        var options = {
+          url: 'https://api.spotify.com/v1/me/playlists',
+          headers: {'Authorization': 'Bearer ' + access_token},
+          json: true
+        }
+        request.get(options, function(error, response, body) {
+          console.log(body)
+        })
         // we can also pass the token to the browser to make requests from there
         res.redirect('/#' +
           querystring.stringify({
