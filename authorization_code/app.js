@@ -47,7 +47,7 @@ app.get('/login', function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email';
+  var scope = 'user-read-private user-read-email user-follow-modify';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -94,7 +94,8 @@ app.get('/callback', function(req, res) {
             refresh_token = body.refresh_token;
 
         var options = {
-          url: 'https://api.spotify.com/v1/me',
+          scope: 'user-read-private user-read-email user-follow-modify',
+          url: 'https://api.spotify.com/v1/me/following',
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
@@ -104,33 +105,6 @@ app.get('/callback', function(req, res) {
           console.log(body);
         });
 
-        var options = {
-          url: 'https://api.spotify.com/v1/me/top/"artists"',
-          headers: {'Authorization': 'Bearer ' + access_token},
-          json: true
-        }
-        request.get(options, function(error, response, body) {
-          console.log(body)
-        })
-
-        // var options = {
-        //   url: 'https://api.spotify.com/v1/me/playlists',
-        //   headers: {'Authorization': 'Bearer ' + access_token},
-        //   json: true
-        // }
-        // request.get(options, function(error, response, body) {
-        //   console.log(body)
-        // })
-
-        // var options = {
-        //   url: 'https://api.spotify.com/v1/playlists/4lDWGvHAvzm7wZkMMCNe4S',
-        //   headers: {'Authorization': 'Bearer ' + access_token},
-        //   json: true
-        // }
-
-        // request.get(options, function(error, response, body) {
-        //   console.log(body.tracks.items)
-        // })
         // we can also pass the token to the browser to make requests from there
         res.redirect('/#' +
           querystring.stringify({
